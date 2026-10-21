@@ -1,0 +1,17 @@
+# Traduzindo o Concat
+
+Concat fala o idioma que você escolhe em Configurações › Geral › Idioma, e cada idioma é um arquivo único. Veja como adicionar ou melhorar um idioma.
+
+## Como funciona
+
+Cada texto exibido na interface é consultado por uma chave. Uma localização é um arquivo JSON que mapeia cada chave para o seu idioma:
+
+```json
+{
+  "_": { "name": "Deutsch" },
+  "common.settings": "Einstellungen",
+  "mediaBin.importedFiles": "{0} Dateien importiert",
+  "tray.splitAtPlayhead": "Am Abspielkopf teilen ({0})"
+}
+
+O campo _ define o nome do idioma nas suas próprias palavras. Esse nome é exibido na lista de Idiomas, para que quem não leia o idioma atual consiga encontrar o seu.   Todas as outras chaves são idênticas às de src/crates/concat/locales/en.json, o inventário completo em inglês. Copie esse arquivo, mantenha as chaves e altere apenas os valores.   Uma chave utiliza notação de ponto em lowerCamelCase: a seção da interface à qual pertence (common para termos globais), seguida do identificador.   Apenas a interface própria do aplicativo é traduzida. Efeitos, filtros, transições e predefinições de texto são dados e permanecem em inglês conforme seus manifestos.   {0}, {1} e similares são preenchidos em tempo de execução: contagens, nomes, tamanhos de arquivos, atalhos. Mantenha-os onde seu idioma exigir.   Chaves ausentes no seu arquivo são exibidas em inglês, sem quebrar o sistema.   Arquivos antigos indexados diretamente pelo texto em inglês continuam carregando normalmente.   O nome do arquivo corresponde ao código do idioma: de.json, pt-BR.json, zh-Hans.json.   Testando uma tradução sem compilarColoque o arquivo na pasta locales do diretório de configurações do Concat e reinicie o aplicativo; o idioma surgirá nas Configurações.   PlataformaPastamacOS~/Library/Application Support/app.concat.editor/locales/Linux~/.config/app.concat.editor/locales/Windows%APPDATA%\app.concat.editor\locales\Um arquivo nessa pasta com o código de um idioma existente sobrepõe as frases originais, permitindo correções com arquivos contendo apenas as linhas alteradas.   Enviando um idioma para o Concat oficialColoque o arquivo em src/crates/concat/locales/.   Adicione o código e arquivo à tabela BUILT_IN no topo de src/crates/concat/src/i18n.rs.   Crie o README correspondente: adicione scripts/readme/lang_<code>.py com o texto do README no seu idioma, adicione o código em ORDER em scripts/readme/gen.py e execute python3 scripts/readme/gen.py.   Execute python3 scripts/locales.py --check.   Abra um pull request.   Concat inclui 25 idiomas oficialmente: English, العربية, বাংলা, Deutsch, Español, فارسی, Français, עברית, हिन्दी, Hrvatski, Bahasa Indonesia, Italiano, 日本語, 한국어, Nederlands, Polski, Português (Brasil), Русский, ไทย, Türkçe, Українська, اردو, Tiếng Việt, 简体中文 e 繁體中文.   Para desenvolvedoresNovas strings passam pela mesma busca por chave: I18n.t("area.name") (ou t1, t2, upper) na árvore .slint, t("area.name") ou tf("area.name", &[...]) no código Rust[cite: 11]. Nomeie a área após o arquivo onde o texto reside (mediaPane, export, studio) ou common para strings compartilhadas, e o identificador após o que ela representa[cite: 11]. Adicione a versão em inglês em en.json[cite: 11]. Execute python3 scripts/locales.py após adicionar novos termos[cite: 11].
